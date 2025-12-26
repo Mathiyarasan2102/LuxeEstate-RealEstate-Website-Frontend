@@ -1,0 +1,193 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-navy-900 text-cream font-sans;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-serif text-gold-400;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-gold-400 text-navy-900 px-6 py-2 rounded font-medium hover:bg-gold-500 transition-colors duration-200;
+  }
+
+  .btn-outline {
+    @apply border border-gold-400 text-gold-400 px-6 py-2 rounded font-medium hover:bg-gold-400 hover:text-navy-900 transition-colors duration-200;
+  }
+
+  .input-field {
+    @apply w-full bg-navy-800 border border-navy-700 rounded px-4 py-2 text-cream focus:outline-none focus:border-gold-400;
+  }
+
+  .card {
+    @apply bg-navy-800 rounded-lg p-6 hover:shadow-lg hover:shadow-gold-400/10 transition-shadow duration-300;
+  }
+}
+
+@layer utilities {
+  @keyframes bell-shake {
+    0% {
+      transform: rotate(0);
+    }
+
+    15% {
+      transform: rotate(3deg);
+    }
+
+    30% {
+      transform: rotate(-3deg);
+    }
+
+    45% {
+      transform: rotate(2deg);
+    }
+
+    60% {
+      transform: rotate(-2deg);
+    }
+
+    75% {
+      transform: rotate(1deg);
+    }
+
+    85% {
+      transform: rotate(-1deg);
+    }
+
+    100% {
+      transform: rotate(0);
+    }
+  }
+
+  .bell-ring-container:hover .animate-bell-shake {
+    animation: bell-shake 1.2s cubic-bezier(.36, .07, .19, .97) infinite;
+    transform-origin: top center;
+  }
+
+  .ringing .animate-bell-shake {
+    animation: bell-shake 3s cubic-bezier(.36, .07, .19, .97) both;
+    transform-origin: top center;
+  }
+}
+
+/* Hide default browser password reveal button (Edge/IE) */
+input[type='password']::-ms-reveal,
+input[type='password']::-ms-clear {
+  display: none;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  /* navy-700 equivalent */
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #fbbf24;
+  /* gold-400 */
+}
+
+/* Hide number input arrows */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Ringing effect (half circles) - Sound Waves */
+.bell-ring-container {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* The concentric arcs/circles */
+.bell-ring-container:hover::before,
+.bell-ring-container:hover::after,
+.ringing .bell-ring-container::before,
+.ringing .bell-ring-container::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 2px solid theme('colors.gold.400');
+  opacity: 0;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Animation for the waves - Continuous on hover */
+.bell-ring-container:hover::before {
+  animation: bell-ring-wave 1.5s infinite ease-out;
+}
+
+.bell-ring-container:hover::after {
+  animation: bell-ring-wave 1.5s infinite ease-out 0.4s;
+}
+
+/* Animation for the waves - 3 seconds on notification */
+.ringing .bell-ring-container::before {
+  animation: bell-ring-wave 3s ease-out;
+}
+
+.ringing .bell-ring-container::after {
+  animation: bell-ring-wave 3s ease-out 0.4s;
+}
+
+@keyframes bell-ring-wave {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.8;
+    border-width: 2px;
+  }
+
+  100% {
+    transform: scale(2);
+    opacity: 0;
+    border-width: 0px;
+  }
+}
+
+/* Notification Highlight Animation */
+.notification-highlight {
+  animation: notification-pulse 2s ease-in-out;
+  border: 2px solid theme('colors.gold.400') !important;
+  box-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
+}
+
+@keyframes notification-pulse {
+
+  0%,
+  100% {
+    border-color: theme('colors.gold.400');
+    box-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
+  }
+
+  50% {
+    border-color: theme('colors.gold.500');
+    box-shadow: 0 0 30px rgba(251, 191, 36, 0.5);
+  }
+}
