@@ -33,15 +33,27 @@ const NotificationDropdown = () => {
     const isFirstRender = useRef(true);
 
     // Trigger bell ringing animation when new notifications arrive
+    // Trigger bell ringing animation when new notifications arrive
     useEffect(() => {
-        // Skip logic on very first mount
+        // Handle First Load: Ring if there are ALREADY unread notifications
         if (isFirstRender.current) {
             isFirstRender.current = false;
+
+            if (unreadCount > 0) {
+                console.log('🔔 Bell ringing on login/load! Unread:', unreadCount);
+                setIsRinging(true);
+                const timer = setTimeout(() => {
+                    setIsRinging(false);
+                }, 3000);
+                prevUnreadCountRef.current = unreadCount;
+                return () => clearTimeout(timer);
+            }
+
             prevUnreadCountRef.current = unreadCount;
             return;
         }
 
-        // Trigger animation when count increases (e.g. 0 -> 1, or 5 -> 6)
+        // Handle Live Updates: Ring if count INCREASES
         if (unreadCount > prevUnreadCountRef.current) {
             console.log('🔔 Bell ringing triggered!', unreadCount);
             setIsRinging(true);
