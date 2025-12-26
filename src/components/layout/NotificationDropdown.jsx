@@ -30,20 +30,28 @@ const NotificationDropdown = () => {
     const unreadCount = visibleNotifications.length;
 
     // Trigger bell ringing animation when new notifications arrive
+    const isFirstRender = useRef(true);
+
+    // Trigger bell ringing animation when new notifications arrive
     useEffect(() => {
-        // Initialize ref on first render
-        if (prevUnreadCountRef.current === 0 && unreadCount > 0) {
+        // Skip logic on very first mount
+        if (isFirstRender.current) {
+            isFirstRender.current = false;
             prevUnreadCountRef.current = unreadCount;
             return;
         }
 
-        // Trigger animation when count increases
+        // Trigger animation when count increases (e.g. 0 -> 1, or 5 -> 6)
         if (unreadCount > prevUnreadCountRef.current) {
-            console.log('🔔 Bell ringing triggered! Previous:', prevUnreadCountRef.current, 'Current:', unreadCount);
+            console.log('🔔 Bell ringing triggered!', unreadCount);
             setIsRinging(true);
+
+            // Play sound (optional, if file exists)
+            // const audio = new Audio('/notification.mp3');
+            // audio.play().catch(e => console.log('Audio play failed', e));
+
             const timer = setTimeout(() => {
                 setIsRinging(false);
-                console.log('🔕 Bell ringing stopped');
             }, 3000);
             return () => clearTimeout(timer);
         }
