@@ -23,7 +23,7 @@ export const SocketProvider = ({ children }) => {
         // For safe measure, we can use window.location.hostname if local, or explicit env.
         // Let's assume http://localhost:5000 for now or derive from existing config logic.
 
-        const socketUrl = 'http://localhost:5000';
+        const socketUrl = import.meta.env.VITE_SOCKET_URL || 'http://localhost:5000';
 
         const newSocket = io(socketUrl, {
             withCredentials: true,
